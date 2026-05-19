@@ -56,7 +56,7 @@ const works = [
   {
     title: "怡颗莓 (Driscoll's) - 这个五一保持好心情",
     category: "Food",
-    description: "节日主题创意短片，探索果园结合种植工艺，传递温暖治愈的品牌调性。"
+    description: "节日主题创意短片，探索果园结合种植工艺，传递温暖治愈的品牌调性。",
     videoFile: "kewpie-mood.mp4",
   },
   {
