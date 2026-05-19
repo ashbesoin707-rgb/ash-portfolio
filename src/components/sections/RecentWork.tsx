@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { getVideoUrl, getThumbnailUrl } from "../../config/oss";
 
@@ -139,11 +139,74 @@ const works = [
   },
 ];
 
+function VideoModal({ work, onClose }: { work: { title: string; videoFile: string }; onClose: () => void }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [onClose]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 md:p-8"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.9 }}
+        transition={{ duration: 0.3 }}
+        className="relative w-full max-w-5xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* 关闭按钮 */}
+        <button
+          onClick={onClose}
+          className="absolute -top-12 right-0 text-white/70 hover:text-white transition-colors flex items-center gap-2 text-sm"
+        >
+          关闭
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
+        {/* 视频标题 */}
+        <h3 className="text-white text-lg font-medium mb-3">{work.title}</h3>
+
+        {/* 视频播放器 */}
+        <div className="relative rounded-2xl overflow-hidden bg-black shadow-2xl">
+          <video
+            ref={videoRef}
+            src={getVideoUrl(work.videoFile)}
+            className="w-full aspect-video object-contain"
+            controls
+            autoPlay
+            playsInline
+          />
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 export default function RecentWork() {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [selectedWork, setSelectedWork] = useState<{ title: string; videoFile: string } | null>(null);
 
-  const filteredWorks = activeCategory === "All" 
-    ? works 
+  const filteredWorks = activeCategory === "All"
+    ? works
     : works.filter(work => work.category === activeCategory);
 
   return (
@@ -168,7 +231,7 @@ export default function RecentWork() {
           >
             {cat}
             {activeCategory === cat && (
-              <motion.div 
+              <motion.div
                 layoutId="activeCategory"
                 className="absolute bottom-0 left-0 right-0 h-0.5 bg-black"
               />
@@ -189,6 +252,7 @@ export default function RecentWork() {
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.4 }}
               className="group cursor-pointer"
+              onClick={() => work.videoFile && setSelectedWork(work)}
             >
               <div className="aspect-video overflow-hidden rounded-2xl bg-gray-900 mb-6 border border-gray-100 shadow-sm transition-all group-hover:shadow-2xl relative">
                 {work.videoFile ? (
@@ -233,6 +297,16 @@ export default function RecentWork() {
           ))}
         </AnimatePresence>
       </div>
+
+      {/* Video Modal */}
+      <AnimatePresence>
+        {selectedWork && (
+          <VideoModal
+            work={selectedWork}
+            onClose={() => setSelectedWork(null)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
