@@ -30,10 +30,10 @@ const works = [
     videoFile: "electrox-like.mp4",
   },
   {
-    title: "高端腕表品牌形象片",
+    title: "高端珠宝 GUCO",
     category: "Brand Film",
     description: "通过极致的光影捕捉，展现产品匠心工艺与时间的故事。",
-    image: "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&q=80&w=800",
+    videoFile: "guco.mp4",
   },
   {
     title: "德美乐嘉 (Dermalogica) - 多维面膜",
