@@ -54,9 +54,9 @@ const works = [
     videoFile: "driscolls-raspberry.mp4",
   },
   {
-    title: "丘比 (Kewpie) - 这个五一保持好心情",
+    title: "怡颗莓 (Driscoll's) - 这个五一保持好心情",
     category: "Food",
-    description: "节日主题创意短片，将面包酱与愉悦心情巧妙关联，传递温暖治愈的品牌调性。",
+    description: "节日主题创意短片，探索果园结合种植工艺，传递温暖治愈的品牌调性。"
     videoFile: "kewpie-mood.mp4",
   },
   {
