@@ -43,5 +43,5 @@ export const getVideoUrl = (filename: string) => {
 
 export const getThumbnailUrl = (filename: string) => {
   const name = filename.replace(/\.[^.]+$/, '.jpg');
-  return `${R2_BASE_URL}/${name}`;
+  return `${R2_BASE_URL}/jpg/${name}`;
 };
